@@ -1,0 +1,28 @@
+name: Daily Commit Workflow
+
+on:
+  schedule:
+    # Runs once daily at 12:00 UTC
+    - cron: "0 12 * * *"  # Customize this time to match your required time
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add a commit
+        run: |
+          # Create a file or update a file to trigger a commit
+          echo "Automated commit at $(date)" >> automated_commit.txt
+          git add automated_commit.txt
+          git commit -m "Automated daily commit by workflow [skip ci]"
+
+      - name: Push changes
+        run: |
+          git config --local user.email "snehapriya.voruganti@gramener.com"
+          git config --local user.name "GitHub Actions"
+          git push
