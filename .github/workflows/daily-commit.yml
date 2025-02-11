@@ -6,6 +6,9 @@ on:
     - cron: "0 12 * * *"  # Customize this time to match your required time
   workflow_dispatch: # Allow manual triggers
 
+permissions:
+  contents: write
+
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
@@ -14,15 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add a commit
+      - name: Add a commit - snehapriya.voruganti@gramener.com
         run: |
-          # Create a file or update a file to trigger a commit
-          echo "Automated commit at $(date)" >> automated_commit.txt
-          git add automated_commit.txt
-          git commit -m "Automated daily commit by workflow [skip ci]"
+          echo "Automated commit on $(date +'%Y-%m-%d %H:%M:%S')" >> daily_commit.log
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "kethu.seshasarathreddy@gramener.com"
+          git add daily_commit.log
+          git commit -m "chore: daily automated commit"
+          git push origin main
 
-      - name: Push changes
-        run: |
-          git config --local user.email "snehapriya.voruganti@gramener.com"
-          git config --local user.name "GitHub Actions"
-          git push
+      - name: Debug Git Status
+        run: git status
